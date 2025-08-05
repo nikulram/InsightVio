@@ -23,7 +23,7 @@ def preprocess_dataset(df: pd.DataFrame, label_column: str):
     # Drop rows with missing label
     df = df.dropna(subset=[label_column])
 
-    # ✅ Drop the 'name' column if it exists (this is causing the crash)
+    # Drop the 'name' column if it exists (this is causing the crash)
     if 'name' in df.columns:
         print("Dropping identifier column: 'name'")
         df = df.drop(columns=['name'])

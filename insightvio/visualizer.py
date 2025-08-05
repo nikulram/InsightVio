@@ -20,41 +20,51 @@ class InsightVisualizer:
         """
         Plots the top features from LIME explanation as a horizontal bar chart.
         If save_path is provided, saves the figure to disk instead of showing.
+        Returns the Matplotlib figure.
         """
         features, weights = zip(*explanation_list)
-        plt.figure(figsize=(8, 4))
-        bars = plt.barh(features, weights, color="teal")
-        plt.xlabel("Weight")
-        plt.title("LIME Feature Importance")
-        plt.gca().invert_yaxis()
+        fig, ax = plt.subplots(figsize=(8, 4))
+        bars = ax.barh(features, weights, color="teal")
+        ax.set_xlabel("Weight")
+        ax.set_title("LIME Feature Importance")
+        ax.invert_yaxis()
+
         for bar in bars:
             width = bar.get_width()
-            plt.text(width, bar.get_y() + bar.get_height() / 2, f"{width:.2f}", va='center')
-        plt.tight_layout()
+            ax.text(width, bar.get_y() + bar.get_height() / 2, f"{width:.2f}", va='center')
+
+        fig.tight_layout()
+
         if save_path:
-            plt.savefig(save_path)
+            fig.savefig(save_path)
+            plt.close(fig)
+            return None
         else:
-            plt.show()
-        plt.close()
+            return fig
 
     def plot_shap_explanation(self, shap_values, feature_names, instance, save_path=None):
         """
         Plots a SHAP bar chart for a single prediction.
         If save_path is provided, saves the figure to disk instead of showing.
+        Returns the Matplotlib figure.
         """
-        plt.figure(figsize=(8, 4))
-        bars = plt.barh(feature_names, shap_values, color="orange")
-        plt.xlabel("SHAP Value")
-        plt.title("SHAP Feature Contributions")
-        plt.gca().invert_yaxis()
+        fig, ax = plt.subplots(figsize=(8, 4))
+        bars = ax.barh(feature_names, shap_values, color="orange")
+        ax.set_xlabel("SHAP Value")
+        ax.set_title("SHAP Feature Contributions")
+        ax.invert_yaxis()
+
         for bar, val in zip(bars, shap_values):
-            plt.text(val, bar.get_y() + bar.get_height() / 2, f"{val:.2f}", va='center')
-        plt.tight_layout()
+            ax.text(val, bar.get_y() + bar.get_height() / 2, f"{val:.2f}", va='center')
+
+        fig.tight_layout()
+
         if save_path:
-            plt.savefig(save_path)
+            fig.savefig(save_path)
+            plt.close(fig)
+            return None
         else:
-            plt.show()
-        plt.close()
+            return fig
 
     def plot_shap_force(self, shap_explainer, instance):
         """
