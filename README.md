@@ -36,31 +36,6 @@ This project bridges the gap between complex AI logic and real-world practitione
 
 ---
 
-## Example Usage
-
-from insightvio.explainers import InsightExplainer
-from insightvio.visualizer import InsightVisualizer
-
-# Fit model
-model.fit(X_train, y_train)
-
-# Create explainer and visualizer
-explainer = InsightExplainer(model=model, data=X_train, mode='classification')
-visualizer = InsightVisualizer()
-
-# Choose a sample to explain
-instance = X_test.iloc[0:1]
-
-# LIME explanation
-lime_result = explainer.explain_instance_with_lime(instance)
-visualizer.plot_lime_explanation(lime_result)
-
-# SHAP explanation
-shap_result = explainer.explain_instance_with_shap(instance)
-visualizer.plot_shap_explanation(shap_result, instance.columns, instance.values[0])
-
----
-
 ## Target Audience
 
 - AI Researchers and Interpretable ML Enthusiasts  
@@ -85,50 +60,49 @@ Recommended: Python 3.9 or newer.
 
 ## Roadmap
 
-**Phase 1** – Visual Explanation Toolkit + Medical Datasets  
-**Phase 2** – Regression support + Custom XAI modules  
-**Phase 3** – Real-time Web API & Deployment UI  
-**Phase 4** – Academic Submission to IEEE / NeurIPS XAI Track  
-**Phase 5** – Auto-generated decision policies & clinical trial support
+InsightVio is being developed in clearly defined, research-grade milestones:
+
+- **Phase 1** – Core Visual Explanation Toolkit (SHAP + LIME) with Medical Datasets (Completed)
+- **Phase 2** – Regression model support + Custom interpretable modules (Next)
+- **Phase 3** – Real-time Web API & Streamlit-based Deployment UI (In Progress)
+- **Phase 4** – Academic Submission to IEEE Xplore or NeurIPS XAI Track
+- **Phase 5** – Auto-generated decision policies & clinical trial interpretability (Final Stage)
 
 ---
 
 ## Phase 1 Use Case: Healthcare AI
 
-Example datasets supported:
-- Breast Cancer Wisconsin (diagnosis)
-- Cleveland Heart Disease Dataset
-- COVID-19 Symptoms & Mortality
+InsightVio currently supports key healthcare datasets for classification:
 
-Coming soon:
-- Real clinical datasets (anonymized partnerships)
-- Upload-your-own-data workflow
+**Currently Integrated:**
+- (Note : Was Converted DATA to .csv)
+- Breast Cancer Wisconsin (Diagnosis) – `load_breast_cancer()` from sklearn
+- Parkinson’s Disease Classification – [UCI Repository](https://archive.ics.uci.edu/ml/datasets/parkinsons)
+- Credit Card Fraud Detection – [Kaggle Dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
+
+**Coming Soon:**
+- Cleveland Heart Disease
+- COVID-19 Symptoms & Mortality Outcomes
+- Upload-your-own-data from GUI or CLI
+
+> All datasets used are open-source and publicly available. Final README will include DOIs and citations.
 
 ---
 
-
 ## Contributing
 
-Want to collaborate? I am open to:
+Interested in shaping the future of InsightVio? Collaborators are welcome for:
 
-- New explainability methods  
-- Real-world datasets (especially medical or finance)  
-- Academic collaborations (PhD or MS thesis, research partnerships)
+- Novel explainability techniques (e.g., Anchors, Integrated Gradients)
+- Dataset integration (especially healthcare, finance, law)
+- Academic partnerships (MS/PhD research, co-authorship, grants)
 
-Fork this repo and open a PR or email Nikul Ram directly.
+> Fork this repository and open a PR, or reach out to me **Nikul Ram** via GitHub.
 
 ---
 
 ## License
 
-This project is licensed under the MIT License.  
-Free for public, personal, and commercial use with attribution.  
+MIT License — free for personal, academic, and commercial use with attribution.
+
 © 2025 Nikul Ram
-
-
-### Notes
-- SHAP plots will appear as interactive Matplotlib figures.
-- LIME explanations are saved as HTML (`lime_output.html`) and opened manually in browser.
-- To generate LIME again, just run:
-
-  python test_shap_lime.py

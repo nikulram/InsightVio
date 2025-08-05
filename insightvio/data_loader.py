@@ -10,6 +10,9 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 import pandas as pd
 
+# imports custom preprocessing logic
+from core.preprocessor import preprocess_dataset
+
 
 def load_breast_cancer_data():
     """
@@ -28,18 +31,15 @@ def load_breast_cancer_data():
 
 def load_csv_data(file_path: str, label_column: str):
     """
-    Loads and splits a custom CSV dataset given a path and label column.
+    Loads and preprocesses a custom CSV dataset using InsightVio's preprocessor.
     Returns: X_train, X_test, y_train, y_test, feature_names
     """
     df = pd.read_csv(file_path)
-    if label_column not in df.columns:
-        raise ValueError(f"Label column '{label_column}' not found in dataset.")
 
-    y = df[label_column]
-    X = df.drop(columns=[label_column])
-    feature_names = X.columns.tolist()
+    # Call the preprocessor to clean and encode data
+    X, y, feature_names = preprocess_dataset(df, label_column)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X.values, y.values, test_size=0.2, random_state=42
+        X, y, test_size=0.2, random_state=42
     )
     return X_train, X_test, y_train, y_test, feature_names
