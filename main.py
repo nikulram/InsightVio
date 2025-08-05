@@ -16,7 +16,7 @@ from insightvio.explainer import InsightExplainer
 from insightvio.visualizer import InsightVisualizer
 
 
-def run_explanation(method: str, save_path: str, csv_path: str, label_column: str):
+def run_explanation(method: str, save_path: str, csv_path: str, label_column: str, task: str):
     # Load dataset
     if csv_path and label_column:
         print(f"Loading custom dataset from {csv_path}")
@@ -28,11 +28,11 @@ def run_explanation(method: str, save_path: str, csv_path: str, label_column: st
     print(f"Dataset has {X_train.shape[1]} features")
 
     # Train model
-    model = train_random_forest(X_train, y_train)
-    print("RandomForest model trained successfully")
+    model = train_random_forest(X_train, y_train, task=task)
+    print(f"Model trained successfully for task: {task}")
 
     # Create explainer + visualizer
-    explainer = InsightExplainer(model, X_train, feature_names)
+    explainer = InsightExplainer(model, X_train, feature_names, task=task)
     visualizer = InsightVisualizer()
 
     # Select first test instance
@@ -41,10 +41,17 @@ def run_explanation(method: str, save_path: str, csv_path: str, label_column: st
     # Run explanation
     if method == "shap":
         shap_vals, _ = explainer.explain_with_shap(instance)
+
+        # Handle (N, 2) shape by selecting class 1
+        if shap_vals.ndim == 2 and shap_vals.shape[1] == 2:
+            shap_vals = shap_vals[:, 1]
+
         visualizer.plot_shap_explanation(shap_vals, feature_names, X_test[0], save_path)
+
     elif method == "lime":
         lime_exp = explainer.explain_with_lime(X_test[0])
         visualizer.plot_lime_explanation(lime_exp, save_path)
+
     else:
         raise ValueError("Invalid method. Choose 'shap' or 'lime'.")
 
@@ -56,10 +63,11 @@ def run_explanation(method: str, save_path: str, csv_path: str, label_column: st
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Run InsightVio explanation")
-    parser.add_argument("--method", type=str, choices=["shap", "lime"], default="shap", help="Explanation method to use")
+    parser.add_argument("--method", type=str, choices=["shap", "lime"], default="shap", help="Explanation method")
     parser.add_argument("--save", type=str, help="Path to save output plot (PNG)")
     parser.add_argument("--csv", type=str, help="Path to custom CSV file")
     parser.add_argument("--label", type=str, help="Label column in custom CSV file")
+    parser.add_argument("--task", type=str, choices=["classification", "regression"], default="classification", help="Task type")
     return parser.parse_args()
 
 
@@ -69,7 +77,8 @@ def main():
         method=args.method,
         save_path=args.save,
         csv_path=args.csv,
-        label_column=args.label
+        label_column=args.label,
+        task=args.task
     )
 
 

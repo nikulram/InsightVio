@@ -19,9 +19,11 @@ class InsightVisualizer:
     def plot_lime_explanation(self, explanation_list, save_path=None):
         """
         Plots the top features from LIME explanation as a horizontal bar chart.
-        If save_path is provided, saves the figure to disk instead of showing.
-        Returns the Matplotlib figure.
+        Handles both classification and regression explanations.
         """
+        if not explanation_list or not isinstance(explanation_list[0], tuple):
+            raise ValueError("LIME explanation must be a list of (feature, weight) tuples.")
+
         features, weights = zip(*explanation_list)
         fig, ax = plt.subplots(figsize=(8, 4))
         bars = ax.barh(features, weights, color="teal")
@@ -45,8 +47,6 @@ class InsightVisualizer:
     def plot_shap_explanation(self, shap_values, feature_names, instance, save_path=None):
         """
         Plots a SHAP bar chart for a single prediction.
-        If save_path is provided, saves the figure to disk instead of showing.
-        Returns the Matplotlib figure.
         """
         fig, ax = plt.subplots(figsize=(8, 4))
         bars = ax.barh(feature_names, shap_values, color="orange")
@@ -69,7 +69,6 @@ class InsightVisualizer:
     def plot_shap_force(self, shap_explainer, instance):
         """
         Uses SHAP’s force plot to visualize explanation in notebook (HTML-based).
-        Only works in supported environments (e.g., Jupyter).
         """
         shap.initjs()
         shap_values = shap_explainer(instance)
