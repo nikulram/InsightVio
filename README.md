@@ -53,39 +53,35 @@ Install Python packages:
 pip install shap lime matplotlib scikit-learn pandas numpy
 
 
-Recommended: Python 3.9 or newer.
+Recommended: Python 3.9 or newer.(I am Using Python 3.11.5)
 
 
 ---
 
 ## Roadmap
 
-InsightVio is being developed in clearly defined, research-grade milestones:
+## Phase 1 & 2
 
-- **Phase 1** – Core Visual Explanation Toolkit (SHAP + LIME) with Medical Datasets (Completed)
-- **Phase 2** – Regression model support + Custom interpretable modules (Next)
-- **Phase 3** – Real-time Web API & Streamlit-based Deployment UI (In Progress)
-- **Phase 4** – Academic Submission to IEEE Xplore or NeurIPS XAI Track
-- **Phase 5** – Auto-generated decision policies & clinical trial interpretability (Final Stage)
+InsightVio currently supports classification and regression tasks on real-world healthcare datasets through both CLI and Streamlit web interface. It enables full explainability via SHAP and LIME for both uploaded CSVs and manual live input.
 
----
+Currently Integrated:
+- Breast Cancer Wisconsin (Diagnosis) – via `load_breast_cancer()` from `sklearn.datasets`
+- Parkinson’s Disease Classification – UCI ML Repository (converted to `.csv`)
+- Diabetes Progression (Regression) – via `load_diabetes()` from `sklearn.datasets`
+- Credit Card Fraud Detection – Kaggle Dataset (converted to `.csv`)
+- Custom CSV Upload – with automatic preprocessing and label detection
+- Live Manual Input Mode – supports on-the-fly explanations using form-based entry
 
-## Phase 1 Use Case: Healthcare AI
-
-InsightVio currently supports key healthcare datasets for classification:
-
-**Currently Integrated:**
-- (Note : Was Converted DATA to .csv)
-- Breast Cancer Wisconsin (Diagnosis) – `load_breast_cancer()` from sklearn
-- Parkinson’s Disease Classification – [UCI Repository](https://archive.ics.uci.edu/ml/datasets/parkinsons)
-- Credit Card Fraud Detection – [Kaggle Dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
-
-**Coming Soon:**
+Upcoming (Phase 3–4):
 - Cleveland Heart Disease
 - COVID-19 Symptoms & Mortality Outcomes
-- Upload-your-own-data from GUI or CLI
+- UCI Liver Disorders Dataset
+- Model upload & selection support (external pickled models)
 
-> All datasets used are open-source and publicly available. Final README will include DOIs and citations.
+
+- Test with : streamlit run streamlit_app/app.py
+
+>All datasets are open-source and publicly available. Final README will include citations, licenses, and DOI references for proper attribution.
 
 ---
 
